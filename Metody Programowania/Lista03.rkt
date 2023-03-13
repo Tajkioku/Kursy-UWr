@@ -33,7 +33,7 @@
 (check equal? (my-product (list 1 2 -3 -4)) 24)
 
 ;Zadanie 3
-;Używając modelu podstawieniowego, prześledź wykonanie wyrażeń.
+;Używając modelu podstawieniowego, prześledź wykonanie wyrażeń.
 
 ((lambda (x y) (+ x (* x y))) 1 2)
 ;Wywoła funkcję lambda z argumentami 1 i 2. Wynik to 1 + (1*2) = 3.
@@ -53,7 +53,7 @@
 ;Wynik to brak wartosci.
 
 ;Zadanie 4
-;Zlozenie funkcji f i g i przesledenie wykonania wyrazen:
+;Zlozenie funkcji f i g i przesledenie wykonania 2 wyrazen.
 (define (square x) (* x x))
 
 (define (inc x) (+ x 1))
@@ -72,6 +72,7 @@
 ;26
 
 ;Zadanie 5
+;Kilka procedur dla listy.
 (define (negatives n)
   (build-list n (lambda (i) (- (+ i 1)))))
 
@@ -100,7 +101,7 @@
 (check equal? (identityM 3) (list (list 1 0 0) (list 0 1 0) (list 0 0 1)))
 
 ;Zadanie 6
-;Predykaty charakterystyczne dla seta
+;Utworz predykaty charakterystyczne dla seta.
 (define (empty-set? s)
   #f)
 
@@ -116,6 +117,24 @@
 
 (define (intersect s t)
   (set-intersect s t))
+
+;Zadanie 7
+;Jak duzo consow tworzy ponizsza procedura dlugosci n?
+(define (foldr-reverse xs)
+  (foldr (lambda (y ys) (append ys (list y))) null xs))
+
+(length (foldr-reverse (build-list 20000 identity)))
+
+;Append tworzy nową listę zawierającą wszystkie elementy swoich argumentów,
+;wiec dla każdego elementu wejsciowego musi zostać utworzona nowa lista jednoelementowa.
+;W sumie utworzonych zostanie n list jednoelementowych
+;oraz dla każdej listy jednoelementowej musi zostać utworzona nowa lista,
+;która łączy listę jednoelementową z pozostałą częścią odwróconej listy.
+;Wiec append tworzy listę, która jest długości 2,
+;następnie lista łączy się z następną listą jednoelementową,
+;tworząc listę długości 3 i tak dalej.
+;Oznacza to, że dla każdej z n jednoelementowych list wykonamy dodatkowe (n-1) kroków łączenia list.
+;Finalnie procedura towrzy n-1 + n-2 + ... + 2 + 1 = n(n-)/2 consow.
 
 
 
