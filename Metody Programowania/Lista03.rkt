@@ -2,15 +2,16 @@
 (require rackunit)
 
 ;Zadanie 1
-;Zapisz wyrazenia bez cytowania
-'((car (a . b)) (* 2))
-(cons '(car (a . b)) '((* 2)))
+;'((car (a . b)) (* 2))
+;(list (list 'car (cons 'a 'b)) (list '* 2))
+;'(,(car '(a . b)) ,(* 2))
+;(list 'a 2)
+;'((+ 1 2 3) (cons) (cons a b))
+;(list (list '+ 1 2 3) (list 'cons) (list 'cons 'a 'b))
 
-'(,(car '(a . b)) ,(* 2))
-(cons ' ,(car '(a . b)) '(,(* 2)))
-
-'((+ 1 2 3) (cons) (cons a b))
-(list '(+ 1 2 3) '(cons) '(cons a b))
+(check-equal? (equal? '((car (a . b)) (* 2)) (list (list 'car (cons 'a 'b)) (list '* 2))) #t)
+(check-equal? (equal? `(,(car '(a . b)) ,(* 2)) (list 'a 2)) #t) 
+(check-equal? (equal? '((+ 1 2 3) (cons) (cons a b)) (list (list '+ 1 2 3) (list 'cons) (list 'cons 'a 'b))) #t)
 
 ;Zadanie 2
 ;Iloczyn elementow listy wykorzystujac foldl
@@ -33,24 +34,24 @@
 (check equal? (my-product (list 1 2 -3 -4)) 24)
 
 ;Zadanie 3
-;Używając modelu podstawieniowego, prześledź wykonanie wyrażeń.
+; ((lambda (x y) (+ x (* x y))) 1 2)
+; -> (+ 1 (* 1 2))
+; -> (+ 1 2)
+; -> 3
 
-((lambda (x y) (+ x (* x y))) 1 2)
-;Wywoła funkcję lambda z argumentami 1 i 2. Wynik to 1 + (1*2) = 3.
+; ((lambda (x) x) (lambda (x) x))
+; -> (lambda (x) x)
+; -> x
 
-((lambda (x) x) (lambda (x) x))
-;Wywoła funkcję lambda z argumentem (lambda (x) x), co spowoduje zwrócenie jej samej.
+; ((lambda (x) (x x) (lambda (x) x))
+; -> ((lambda (x) x) (lambda (x) x))
+; -> (lambda (x) x)
+; -> x
 
-((lambda (x) (x x)) (lambda (x) x))
-;Wywołuje funkcję lambda z argumentem (lambda (x) x).
-;W wyniku wywołania, ciało funkcji (x x) jest wywołane z samą funkcją lambda (lambda (x) x) jako argumentem.
-;W ten sposób wywołanie ciała funkcji (x x) zwraca samo wyrażenie (lambda (x) x).
-
-;((lambda (x) (x x)) (lambda (x) (x x)))
-;W wyniku tego wywołania, ciało funkcji (x x) wywołane z funkcją (lambda (x) (x x)) jako argumentem,
-;ponownie zwraca samo wyrażenie (lambda (x) (x x)),
-;Skutkuje to kolejnym wywołaniem (x x) z tym samym argumentem, w nieskończoną pętlę.
-;Wynik to brak wartosci.
+; ((lambda (x) (x x)) (lambda (x) (x x)))
+; -> ((lambda (x) (x x)) (lambda (x) (x x)))
+; -> ((lambda (x) (x x)) (lambda (x) (x x)))
+; -> petla w nieskończoność
 
 ;Zadanie 4
 ;Zlozenie funkcji f i g i przesledenie wykonania 2 wyrazen.
@@ -61,15 +62,21 @@
 (define (my-compose f g)
   (lambda (x) (f (g x))))
 
-((my-compose square inc) 5)
-;(square (inc 5))
-;(square 6)
-;36
+; ((my-compose square inc) 5)
+; -> ((lambda (x) (square (inc x))) 5)
+; -> (square (inc 5))
+; -> (square (+ 5 1))
+; -> (square 6)
+; -> (* 6 6)
+; -> 36
 
-((my-compose inc square) 5)
-;(inc (square 5))
-;(inc 25)
-;26
+; ((my-compose inc square) 5)
+; -> ((lambda (x) (inc (square x))) 5)
+; -> (inc (square 5))
+; -> (inc (* 5 5))
+; -> (inc 25)
+; -> (+ 25 1)
+; -> 26
 
 ;Zadanie 5
 ;Kilka procedur dla listy.
@@ -102,28 +109,36 @@
 
 ;Zadanie 6
 ;Utworz predykaty charakterystyczne dla seta.
-(define (empty-set? s)
-  #f)
+(define empty-set
+  (lambda (x) #f))
 
-(define (singleton? s a)
-  (and (= (set-count s) 1)
-       (equal? (set-first s) a)))
+(define (singleton a)
+  (lambda (x) (equal? a x)))
 
-(define (in? a s)
-  (set-member? a s))
+(define (in a s)
+  (s a))
 
 (define (union s t)
-  (set-union s t))
+  (lambda (x) (or (s x) (t x))))
 
 (define (intersect s t)
-  (set-intersect s t))
+  (lambda (x) (and (s x) (t x))))
+
+(check-equal? (empty-set 2) #f)
+(check-equal? ((singleton 2) 2) #t)
+(check-equal? (in 5 (union (singleton 5) (singleton 6))) #t)
+(check-equal? (in 4 (union (singleton 5) (singleton 6))) #f)
+(check-equal? ((union (singleton 5) (singleton 6)) 6) #t)
+(check-equal? ((union (singleton 5) (singleton 6)) 4) #f)
+(check-equal? ((intersect (union (singleton 5) (singleton 6)) (union (singleton 4) (singleton 5))) 5) #t)
+(check-equal? ((intersect (union (singleton 5) (singleton 6)) (union (singleton 4) (singleton 5))) 6) #f)
 
 ;Zadanie 7
 ;Jak duzo consow tworzy ponizsza procedura dlugosci n?
 (define (foldr-reverse xs)
   (foldr (lambda (y ys) (append ys (list y))) null xs))
 
-(length (foldr-reverse (build-list 20000 identity)))
+;(length (foldr-reverse (build-list 10000 identity)))
 
 ;Append tworzy nową listę zawierającą wszystkie elementy swoich argumentów,
 ;wiec dla każdego elementu wejsciowego musi zostać utworzona nowa lista jednoelementowa.
@@ -135,6 +150,26 @@
 ;tworząc listę długości 3 i tak dalej.
 ;Oznacza to, że dla każdej z n jednoelementowych list wykonamy dodatkowe (n-1) kroków łączenia list.
 ;Finalnie procedura towrzy n-1 + n-2 + ... + 2 + 1 = n(n-)/2 consow.
+;Ale potrzeba tylko n, wiec reszta to nieuzytki
+
+;Zadanie 8
+(define (list->llist xs)
+  (lambda (x) (append xs x)))
+
+(define (llist->list f)
+  (f null))
+
+(define (llist-singleton x)
+  (lambda (y) (append (list x) y)))
+
+(define llist-null
+  (lambda (x) append null x))
+
+(define (llist-append f g)
+  (lambda (x) (f (g x))))
+
+(define (foldr-llist-reverse xs)
+  (llist->list (foldr (lambda (x f) (llist-append f (llist-singleton x))) llist-null xs)))
 
 
 
