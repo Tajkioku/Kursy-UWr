@@ -17,6 +17,7 @@ Znajdują się tutaj materiały oraz rozwiązania zadań z przedmiotów, które 
 * Kurs języka C++
 * Metody implementacji algorytmów
 * Analiza matematyczna 1 (IM)
+* Kombinatoryka (IM)
 
 ## Semester 3
 * Analiza numeryczna
@@ -25,3 +26,9 @@ Znajdują się tutaj materiały oraz rozwiązania zadań z przedmiotów, które 
 * Kurs rozszerzony języka Python
 * Analiza matematyczna 2 (IM)
 * Algebra liniowa 1 (IM)
+
+## Semester 4
+* Algorytmy i struktury danych
+* Programowanie obiektowe
+* Algebra liniowa 2 (IM)
+* Język angielski certyfikat B2-II
