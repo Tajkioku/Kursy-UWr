@@ -1,0 +1,16 @@
+let t =
+  Node (Node (Leaf, 2, Leaf),
+        5,
+        Node (Node (Leaf, 6, Leaf),
+              8,
+              Node (Leaf, 9, Leaf)));;
+
+let t' = insert_bst 7 t;;
+
+         5
+        / \
+       2   8
+          / \
+         6   9
+          \
+           7

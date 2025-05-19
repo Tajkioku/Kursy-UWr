@@ -1,0 +1,23 @@
+Kamil Woźniak 330601
+Programowanie Obiektowe - projekt
+
+Tetris – dokumentacja wstępna projektu
+
+1. Cel projektu
+---------------
+Celem projektu jest implementacja klasycznej gry Tetris w wersji desktopowej. Gra pozwoli na:
+- generowanie i opadanie siedmiu standardowych klocków o różnych kształtach,
+- przesuwanie i obracanie klocków za pomocą klawiatury,
+- wykrywanie kolizji i usuwanie wypełnionych poziomych linii,
+- naliczanie punktów za każdą usuniętą linię
+- prosty interfejs graficzny pokazujący planszę, aktualny wynik.
+
+
+2. Proponowane środowisko deweloperskie
+----------------------------------------
+Język programowania: 
+- Java
+
+GUI i framework:
+JavaFX – budowa i renderowanie planszy oraz elementów interfejsu użytkownika
+

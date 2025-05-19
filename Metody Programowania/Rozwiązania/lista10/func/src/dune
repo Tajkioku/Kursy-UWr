@@ -1,0 +1,21 @@
+(library
+ (name fun)
+ (modules ast interp rpn lexer parser runtime prefix))
+
+(test
+ (name test_prefix)
+ (libraries oUnit2 fun))
+
+(test
+ (name test_rpn)
+ (libraries oUnit2 fun))
+
+(executable
+ (public_name fun)
+ (name main)
+ (libraries fun))
+
+(executable
+ (public_name func)
+ (name func)
+ (libraries fun))

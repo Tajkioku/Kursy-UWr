@@ -1,0 +1,44 @@
+type token =
+    WITH
+  | UNIT
+  | TIMES
+  | THEN
+  | SND
+  | SEMICOLON
+  | RPAREN
+  | RBRACKET
+  | PLUS
+  | OR
+  | MINUS
+  | MATCH
+  | LPAREN
+  | LET
+  | LEQ
+  | LBRACKET
+  | ISUNIT
+  | ISPAIR
+  | ISNUMBER
+  | ISBOOLEAN
+  | INT of int
+  | IN
+  | IF
+  | IDENT of string
+  | FST
+  | FOLDAND
+  | FOLD
+  | EQ
+  | EOF
+  | ELSE
+  | DIV
+  | COMMA
+  | BOOL of bool
+  | ARR
+  | AND
+val expand_list : Ast.expr list -> Ast.expr
+val menhir_begin_marker : int
+val xv_non_empty_list_items : Ast.expr list
+val xv_mexpr : Ast.expr
+val xv_main : Ast.expr
+val xv_list_items : Ast.expr list
+val xv_expr : Ast.expr
+val menhir_end_marker : int
