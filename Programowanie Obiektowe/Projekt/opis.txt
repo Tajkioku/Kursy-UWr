@@ -4,20 +4,75 @@ Programowanie Obiektowe - projekt
 Tetris – dokumentacja wstępna projektu
 
 1. Cel projektu
----------------
+----------------
 Celem projektu jest implementacja klasycznej gry Tetris w wersji desktopowej. Gra pozwoli na:
 - generowanie i opadanie siedmiu standardowych klocków o różnych kształtach,
 - przesuwanie i obracanie klocków za pomocą klawiatury,
 - wykrywanie kolizji i usuwanie wypełnionych poziomych linii,
 - naliczanie punktów za każdą usuniętą linię
+   1 linia -> +100 pkt
+   2 linie -> +300 pkt
+   3 linie -> +500 pkt
+   4 linie -> +800 pkt
 - prosty interfejs graficzny pokazujący planszę, aktualny wynik.
+- liczenie „levelu”: co każde 10 usuniętych linii poziom rośnie o 1, a interwał automatycznego spadania skraca się o 50 ms (z minimalnym czasem 100 ms).
+- zbieranie statystyk w trakcie gry:
+- łączna liczba usuniętych linii,
+- liczba postawionych klocków każdego rodzaju (I, J, L, O, S, T, Z).
 
 
 2. Proponowane środowisko deweloperskie
 ----------------------------------------
 Język programowania: 
 - Java
+- Biblioteka GUI: Swing
 
-GUI i framework:
-JavaFX – budowa i renderowanie planszy oraz elementów interfejsu użytkownika
+3. Struktura
+-------------
+tetris/
+└─ src/
+   └─ tetris/
+      ├─ Direction.java
+      ├─ Tetromino.java
+      ├─ IShape.java
+      ├─ JShape.java
+      ├─ LShape.java
+      ├─ OShape.java
+      ├─ SShape.java
+      ├─ TShape.java
+      ├─ ZShape.java
+      ├─ GameWindowComponent.java
+      ├─ BoardComponent.java
+      ├─ ScorePanelComponent.java
+      ├─ NextTetrominoComponent.java
+      ├─ PauseMenuComponent.java
+      ├─ HighScoreComponent.java
+      └─ Tetris.java
+
+
+                    ┌─────────────────────┐
+                    │  GameWindowComponent│◄––––––––––––––┐
+                    └─────────────────────┘               │
+                           ▲                              │
+          ┌────────────────┼────────────────┐             │
+          │                │                │             │
+┌────────────────┐ ┌────────────────────┐ ┌───────────────────────┐
+│ BoardComponent │ │ ScorePanelComponent│ │ NextTetrominoComponent│
+└────────────────┘ └────────────────────┘ └───────────────────────┘
+          ▲                ▲                              ▲
+          │                │                              │
+ ┌───────────────────┐  ┌───────────────────┐  ┌───────────────┐
+ │ PauseMenuComponent│  │ HighScoreComponent│  │   Direction   │
+ └───────────────────┘  └───────────────────┘  └───────────────┘
+
+ ┌──────────────────┐
+ │    Tetromino     │◄–––––––––––––––––––––┐
+ └──────────────────┘                      │
+           ▲                               │
+  ┌────────┼──────────┬───────────┬────────┼─────────┬─────────┐
+  │        │          │           │        │         │         │
+  │        │          │           │        │         │         │
+┌────────┐┌────────┐┌─────────┐┌────────┐┌────────┐┌────────┐┌────────┐
+│ IShape ││ JShape ││ LShape  ││ OShape ││ SShape ││ TShape ││ ZShape │
+└────────┘└────────┘└─────────┘└────────┘└────────┘└────────┘└────────┘
 
